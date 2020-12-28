@@ -1,4 +1,4 @@
-module go.finxact.io/engineering/core/serial
+module github.com/zugarekd/go-matrix-orbital
 
 go 1.13
 
