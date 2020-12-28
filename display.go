@@ -1,28 +1,11 @@
 package main
 
 import (
-	"encoding/hex"
 	"github.com/tarm/serial"
 )
 
-func main() {
-	display := Display{
-		Config: serial.Config{Name: "/dev/ttyUSB0", Baud: 19200},
-	}
-
-	display.Open()
-	display.Clear()
-	display.BlinkOff()
-	//display.BackLightOn(0)
-	display.Write("DanZ")
-	display.BlinkOn()
-	display.HorizontalBarGraph()
-	//display.Contrast(50)
-	display.Close()
-}
-
 const (
-	CommandPrefix = "FE"
+	CommandPrefix = "\xFE"
 )
 
 type Display struct {
@@ -47,12 +30,13 @@ func (d *Display) Write(data string) error {
 }
 
 func (d *Display) Clear() error {
-	command, _ := hex.DecodeString(CommandPrefix)
+	command := []byte(CommandPrefix)
 	command = append(command, []byte("X")...)
-	_, err := d.port.Write([]byte(command))
+	_, err := d.port.Write(command)
 	return err
 }
 
+/*
 func (d *Display) BackLightOn(time byte) error {
 	command, _ := hex.DecodeString(CommandPrefix)
 	command = append(command, []byte("B")...)
@@ -116,3 +100,5 @@ func (d *Display) HorizontalBarGraph() error {
 
 	return err
 }
+
+*/
